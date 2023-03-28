@@ -32,6 +32,9 @@ function! lightline#lsp#hints() abort
   if !lightline#lsp#linted()
     return ''
   endif
+  if lightline#lsp#disabled()
+    return ''
+  endif
   if s:skip_update_in_insert()
     return s:hint
   endif
@@ -42,6 +45,9 @@ endfunction
 
 function! lightline#lsp#infos() abort
   if !lightline#lsp#linted()
+    return ''
+  endif
+  if lightline#lsp#disabled()
     return ''
   endif
   if s:skip_update_in_insert()
@@ -56,6 +62,9 @@ function! lightline#lsp#warnings() abort
   if !lightline#lsp#linted()
     return ''
   endif
+  if lightline#lsp#disabled()
+    return ''
+  endif
   if s:skip_update_in_insert()
     return s:warn
   endif
@@ -68,6 +77,9 @@ function! lightline#lsp#errors() abort
   if !lightline#lsp#linted()
     return ''
   endif
+  if lightline#lsp#disabled()
+    return ''
+  endif
   if s:skip_update_in_insert()
     return s:error
   endif
@@ -78,6 +90,9 @@ endfunction
 
 function! lightline#lsp#ok() abort
   if !lightline#lsp#linted()
+    return ''
+  endif
+  if lightline#lsp#disabled()
     return ''
   endif
   if s:skip_update_in_insert()
@@ -98,4 +113,8 @@ endfunction
 
 function! lightline#lsp#linted() abort
   return !!luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients('.bufnr().'))')
+endfunction
+
+function! lightline#lsp#disabled() abort
+  return !!luaeval('vim.g.diagnostics_disabled or vim.b.diagnostics_disabled')
 endfunction
